@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff0f6;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            background: #ff99b3;
+            height: 180px;
+            border-radius: 8px;
+            transition: all 0.5s ease;
+        }
+
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 90px solid #ff6680;
+            transform-origin: top;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0;
+            width: 90%;
+            left: 5%;
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.6s 0.3s ease-out;
+        }
+
+        .envelope.open {
+            transform: translateY(-20px);
+        }
+
+        .envelope.open:before {
+            transform: rotateX(180deg);
+            z-index: -1;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-50px);
+            opacity: 1;
+        }
+
+        .heart-stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #ff1a4d;
+        }
+
+        /* Hiệu ứng trái tim bay */
+        .heart-fall {
+            position: fixed;
+            pointer-events: none;
+            animation: heartFloat 3s linear forwards;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="envelope-wrapper" onclick="toggleEnvelope()">
+    <div class="envelope">
+        <div class="heart-stamp">💌</div>
+        <div class="letter">
+            <div style="font-family: 'Patrick Hand', cursive; color: #555;">
+                <p>Gửi cậu,</p>
+                <p>Tớ muốn nói rằng...</p>
+                <p>Tớ thích Na rất nhiều 🌸</p>
+                <p>Tớ yêu Na lắm, Na hãy luôn tươi cười và tích cực nhé, tớ sẽ ở bên cậu❤️</p>
+                <p style="text-align: right; margin-top: 20px;">Từ người luôn nghĩ về cậu ❤️</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isOpen = false;
+    
+    function toggleEnvelope() {
+        const envelope = document.querySelector('.envelope');
+        isOpen = !isOpen;
+        envelope.classList.toggle('open', isOpen);
+        
+        if(isOpen) createHearts();
+    }
+
+    function createHearts() {
+        const hearts = ['❤️', '💖', '💕'];
+        for(let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart-fall';
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+    }
+</script>
+
+</body>
+</html>
